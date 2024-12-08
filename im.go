@@ -54,10 +54,11 @@ type (
 	}
 
 	Options struct {
-		AppId      int    // 应用SDKAppID，可在即时通信 IM 控制台 的应用卡片中获取。
-		AppSecret  string // 密钥信息，可在即时通信 IM 控制台 的应用详情页面中获取，具体操作请参见 获取密钥
-		UserId     string // 用户ID
-		Expiration int    // UserSig过期时间
+		AppId         int    // 应用SDKAppID，可在即时通信 IM 控制台 的应用卡片中获取。
+		AppSecret     string // 密钥信息，可在即时通信 IM 控制台 的应用详情页面中获取，具体操作请参见 获取密钥
+		UserId        string // 用户ID
+		Expiration    int    // UserSig过期时间
+		TIMServerHost string //tencent IM 服务器域名
 	}
 
 	UserSig struct {
@@ -113,10 +114,11 @@ type (
 
 func NewIM(opt *Options) IM {
 	return &im{opt: opt, client: core.NewClient(&core.Options{
-		AppId:      opt.AppId,
-		AppSecret:  opt.AppSecret,
-		UserId:     opt.UserId,
-		Expiration: opt.Expiration,
+		AppId:         opt.AppId,
+		AppSecret:     opt.AppSecret,
+		UserId:        opt.UserId,
+		Expiration:    opt.Expiration,
+		TIMServerHost: opt.TIMServerHost,
 	})}
 }
 

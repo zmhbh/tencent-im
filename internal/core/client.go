@@ -20,7 +20,10 @@ import (
 )
 
 const (
-	defaultBaseUrl     = "https://adminapiger.im.qcloud.com"
+	TIMHostForSG = "https://adminapisgp.im.qcloud.com"
+	TIMHostForCN = "https://console.tim.qq.com"
+	TIMHostForID = "https://adminapiidn.im.qcloud.com"
+	//defaultBaseUrl     = "https://adminapiger.im.qcloud.com"
 	defaultVersion     = "v4"
 	defaultContentType = "json"
 	defaultExpiration  = 3600
@@ -49,10 +52,11 @@ type client struct {
 }
 
 type Options struct {
-	AppId      int    // 应用SDKAppID，可在即时通信 IM 控制台 的应用卡片中获取。
-	AppSecret  string // 密钥信息，可在即时通信 IM 控制台 的应用详情页面中获取，具体操作请参见 获取密钥
-	UserId     string // 用户ID
-	Expiration int    // UserSig过期时间
+	AppId         int    // 应用SDKAppID，可在即时通信 IM 控制台 的应用卡片中获取。
+	AppSecret     string // 密钥信息，可在即时通信 IM 控制台 的应用详情页面中获取，具体操作请参见 获取密钥
+	UserId        string // 用户ID
+	Expiration    int    // UserSig过期时间
+	TIMServerHost string //tencent IM 域名
 }
 
 func NewClient(opt *Options) Client {
@@ -61,7 +65,7 @@ func NewClient(opt *Options) Client {
 	c.opt = opt
 	c.client = http.NewClient()
 	c.client.SetContentType(http.ContentTypeJson)
-	c.client.SetBaseUrl(defaultBaseUrl)
+	c.client.SetBaseUrl(opt.TIMServerHost)
 
 	return c
 }
