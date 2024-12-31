@@ -10,6 +10,12 @@ package private
 import "github.com/dobyte/tencent-im/internal/types"
 
 type (
+	BaseResp struct {
+		ErrorCode    int    `json:"ErrorCode"`
+		ErrorInfo    string `json:"ErrorInfo"`
+		ActionStatus string `json:"ActionStatus"`
+	}
+
 	// 发送消息（请求）
 	sendMessageReq struct {
 		FromUserId            string                 `json:"From_Account,omitempty"`          // （选填）消息发送方UserID（用于指定发送消息方帐号）
@@ -178,6 +184,21 @@ type (
 		Total   int                   // 单聊消息总未读数
 		Results map[string]int        // 未读消息数列表
 		Errors  []*UnreadMessageError // 错误消息列表
+	}
+
+	// ModifyMessageReq 修改消息（请求）
+	ModifyMessageReq struct {
+		FromUserId string           `json:"From_Account"` // （必填）消息发送方UserID
+		ToUserId   string           `json:"To_Account"`   // （必填）消息接收方UserID
+		MsgKey     string           `json:"MsgKey"`       // （必填）待撤回消息的唯一标识。该字段由 REST API 接口 单发单聊消息 和 批量发单聊消息 返回
+		MsgBody    []*types.MsgBody `json:"msg_body"`     // （必填）修改后消息内容
+	}
+
+	ModifyMessageResp struct {
+		BaseResp
+		MsgBody         []*types.MsgBody `json:"MsgBody,omitempty"`         // App 修改之后的消息，如果没有，则默认使用用户发送的消息
+		CloudCustomData string           `json:"CloudCustomData,omitempty"` // 经过 App 修改之后的消息自定义数据（云端保存，会发送到对端，程序卸载重装后还能拉取到），即时通信 IM 后台将把修改后的消息发送给接收方
+		MsgVersion      int              `json:"MsgVersion"`
 	}
 
 	ImageInfo          = types.ImageInfo

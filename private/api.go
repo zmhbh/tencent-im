@@ -22,6 +22,7 @@ const (
 	commandRevokeMessage       = "admin_msgwithdraw"
 	commandSetMessageRead      = "admin_set_msg_read"
 	commandGetUnreadMessageNum = "get_c2c_unread_msg_num"
+	commandModifyMessage       = "modify_c2c_msg"
 )
 
 type API interface {
@@ -105,6 +106,8 @@ type API interface {
 	// 点击查看详细文档:
 	// https://cloud.tencent.com/document/product/269/56043
 	GetUnreadMessageNum(userId string, peerUserIds ...string) (ret *GetUnreadMessageNumRet, err error)
+	// ModifyMessage 修改消息
+	ModifyMessage(req *ModifyMessageReq) (resp *ModifyMessageResp, err error)
 }
 
 type api struct {
@@ -348,6 +351,17 @@ func (a *api) GetUnreadMessageNum(userId string, peerUserIds ...string) (ret *Ge
 
 	for _, item := range resp.PeerUnreadMsgNums {
 		ret.Results[item.UserId] = item.UnreadMsgNum
+	}
+
+	return
+}
+
+// ModifyMessage 修改消息
+// https://cloud.tencent.com/document/product/269/74740
+func (a *api) ModifyMessage(req *ModifyMessageReq) (resp *ModifyMessageResp, err error) {
+	resp = &ModifyMessageResp{}
+	if err = a.client.Post(service, commandModifyMessage, req, resp); err != nil {
+		return
 	}
 
 	return
