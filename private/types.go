@@ -196,7 +196,7 @@ type (
 	}
 
 	ModifyMessageResp struct {
-		BaseResp
+		types.ActionBaseResp
 		MsgBody         []*types.MsgBody `json:"MsgBody,omitempty"`         // App 修改之后的消息，如果没有，则默认使用用户发送的消息
 		CloudCustomData string           `json:"CloudCustomData,omitempty"` // 经过 App 修改之后的消息自定义数据（云端保存，会发送到对端，程序卸载重装后还能拉取到），即时通信 IM 后台将把修改后的消息发送给接收方
 		MsgVersion      int              `json:"MsgVersion"`
